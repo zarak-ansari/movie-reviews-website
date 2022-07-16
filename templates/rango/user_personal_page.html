@@ -1,0 +1,70 @@
+{% extends 'rango/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+User Personal Page
+{% endblock %}
+
+{% block body_block %}
+
+  <!--the fisrt area displays the user's profile image and information-->
+  <div class="hero user-hero">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="hero-ct">
+            <h1 Marvel movie in my opinion>{{user.username}}’s profile</h1>
+            <ul class="breadcumb">
+              <li class="active"><a href="#">Home</a></li>
+              <li> <span class="ion-ios-arrow-right"></span>Rated movies</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--end of the fisrt area -->
+
+  <!--the second area displays the user's reviews -->
+  <div class="page-single" style="padding:20px">
+    <div class="container">
+      <div class="row ipad-width2">
+
+
+        <div class="col-md-3 col-sm-12 col-xs-12">
+          <div class="user-information">
+            <div class="user-img">
+              <a href="#"><img id="profile" src="{%static ''%}{{ objdic.picture }}"><br></a>
+              <h1 class="col-md-12" id="h1_user_name">{{user.username}}</h1>
+            </div> 
+            <div class="user-fav">
+              <p>Information</p>
+              <ul style="font-family:'Dosis', sans-serif; color: #ffffff;"><li>{{ objdic.information }}</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9 col-sm-12 col-xs-12">
+          <div class="topbar-filter">
+            <p>Found <span>{{comment|length}}</span> in total</p>            
+        </div>
+          {% for item in comment %}
+          <div class="movie-item-style-2 userrate">
+            <img src="{%static ''%}{{ item.movie_image }}" alt="">
+            <div class="mv-item-infor">
+              <h6><a href={% url 'rango:movie_detail_page' item.slug %}>{{ item.movie_name }} <span>({{item.release_year}})</span></a></h6>
+              <p class="time sm-text">your rate:</p>
+              <p class="rate"><i class="ion-android-star"></i><span>{{ item.grade }}</span> /10</p>
+              <p class="time sm-text">your reviews:</p>
+              <p class="time sm">{{ item.create_time }}</p>
+              <p>{{ item.comment }}</p>		
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--end of the second area -->
+
+</div>
+{% endblock %}

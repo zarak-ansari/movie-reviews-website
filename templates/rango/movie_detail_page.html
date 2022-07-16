@@ -1,0 +1,159 @@
+{% extends 'rango/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+{{ movie.movie_name }}
+{% endblock %}
+
+
+{% block body_block %}
+
+<div class="hero mv-single-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-single movie-single movie_single">
+    <div class="container">
+        <div class="row ipad-width2">
+
+            <!--the first area displays the poster and trailer link -->
+            <div class="col-md-4 col-sm-12 col-xs-12">
+                <div class="movie-img sticky-sb">
+                    <img src="/media/{{ movie.movie_image }}" alt="Poster for {{ movie.movie_name }}">
+                    <div class="movie-btn">
+                        <div class="btn-transform transform-vertical red">
+                            <div><a href="#" class="item item-1 redbtn"> <i class="ion-play"></i> Watch Trailer</a>
+                            </div>
+                            <div><a href="https://www.youtube.com/embed/{{ trailer }}"
+                                    class="item item-2 redbtn fancybox-media hvr-grow"><i class="ion-play"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end of the first area-->
+
+
+            <div class="col-md-8 col-sm-12 col-xs-12">
+                <div class="movie-single-ct main-content">
+
+                    <!--the second area displays of details of the movie -->
+                    <h1 class="bd-hd">{{ movie.movie_name }} <span>{{movie.release_date}}</span></h1>
+                    <div class="movie-rate">
+                        <div class="rate">
+                            <i class="ion-android-star"></i>
+                            {% if movie.reviews.count > 0 %}
+                            <p><span>{{ average_rating }}</span> /10<br>
+                                <span class="rv">{{movie.reviews.count}} Reviews</span>
+                            </p>
+                            {% else %}
+                            <p><span>Nil</span><br>
+                                <span class="rv">No Reviews Yet</span>
+                            </p>
+                            {% endif %}
+                        </div>
+                        <div class="rate-star">
+                            <p>Rate This Movie: </p>
+                            {% if movie.reviews.count > 0 %}
+                            {% for i in "xxxxxxxxxx" %}
+                            {%  if forloop.counter <= average_rating %}
+                            <i class="ion-ios-star"></i>
+                            {% else %}
+                            <i class="ion-ios-star-outline"></i>
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div style="width: auto;" class="container" id="overview">
+                        <p>{{ movie.movie_information }}</p>
+                    </div>
+                    <!--end of the second area-->
+                    
+                    <!--the third area displays the form of the adding reviews -->
+                    <div class="movie-tabs">
+
+                        <div class="container" style="padding-top: 30px">
+                            <div class="card">
+                                <div class="blog-detail-ct">
+                                    <div class="comment-form" style="width: 70%;">
+                                        <h4>Review This Movie</h4>
+                                        <form action="{% url 'rango:add_movie_reviews' movie.slug %}" method="post">
+                                            {% csrf_token %}
+                                            {{ form }}
+                                            <input class="submit" type="submit" placeholder="submit">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end of the third area-->
+
+                        <!--the forth area displays the reviews of this movie cretaed by users -->
+                        <div class="tabs">
+                            <ul class="tab-links tabs-mv">
+                                <li class="active"><a href="#review">Review</a></li>
+                            </ul>
+                            <div class="tab-content">
+
+                                <div id="reviews" class="tab" style="display: block;">
+                                    <div class="row">
+                                        <div class="rv-hd">
+                                            <div class="div">
+                                                <h3>Reviews For</h3>
+                                                <h2>{{ movie.movie_name }}</h2>
+                                            </div>
+                                            <a href="#" class="redbtn">Write Review</a>
+                                        </div>
+                                        <div class="topbar-filter">
+                                            <p>Found <span>{{ movie.reviews.count }} reviews</span> in total</p>
+                                        </div>
+                                        {% for review in reviews %}
+                                        <div class="mv-user-review-item">
+                                            <div class="user-infor" style="display:flex;">
+                                                <img id="profile_picture"
+                                                    src="{%static ''%}{{ review.user.profile.picture }}"
+                                                    alt="{{review.user.username}}">
+                                                <div>
+                                                    <h3>{{ review.user }}</h3>
+                                                    <div class="no-star">
+                                                        <p>Rate This Movie: </p>
+                                                        {% if review.grade > 0 %}
+                                                        {% for i in "xxxxxxxxxx" %}
+                                                        {%  if forloop.counter|add:"-1" < review.grade %}
+                                                        <i class="ion-android-star"></i>
+                                                        {% else %}
+                                                        <i class="ion-android-star last"></i>
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                        {% endif %}
+                                                    </div>
+                                                    <p class="time">
+                                                        {{ review.create_time }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <p>{{ review.review_content }}</p>
+                                        </div>
+                                        <hr style="border-bottom: 1px solid #38485B;" />
+                                        {% empty %}
+                                        No reviews yet
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end of the forth area -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

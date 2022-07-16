@@ -1,0 +1,52 @@
+{% extends 'rango/base.html' %}
+{% load staticfiles %}
+{% block title_block %}
+Login
+{% endblock %}
+{% block body_block %}
+
+<!--the Login icon -->
+<div class="hero common-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="hero-ct">
+                    <h1> Login </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--the form of login-->
+<div class="hero common-hero">
+    <div class="container" id="container2">
+        <div class="col-md-12">
+            <div class="row">
+
+                <form id="login_form" method="post" action="{% url 'rango:login' %}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <label class="login_lable" for="username">
+                            <input type="text" name="username" id="username" placeholder="Username"
+                                required="required" />
+                        </label>
+                    </div>
+
+                    <div class="row">
+                        <label class="login_lable" for="password">
+                            <input type="password" name="password" id="password" placeholder="password"
+                                required="required" />
+                        </label>
+                    </div>
+                    <div class="row">
+                        <button class="butten" type="submit">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end of the login form-->
+
+{% endblock %}
